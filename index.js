@@ -32,8 +32,8 @@ app.use("/api/cloud", cloudRoutes);
 const PORT = process.env.PORT || 2525
 
 const options = {
-  key: fs.readFileSync("/etc/letsencrypt/live/ebitsvisionai.in/fullchain.pem"),
-  cert: fs.readFileSync("/etc/letsencrypt/live/ebitsvisionai.in/privkey.pem")
+  key: fs.readFileSync("/etc/letsencrypt/archive/ebitsvisionai.in/privkey2.pem", "utf8"),
+  cert: fs.readFileSync("/etc/letsencrypt/archive/ebitsvisionai.in/fullchain2.pem", "utf8")
 };
 
 const server = https.createServer(options, app);
