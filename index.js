@@ -5,8 +5,10 @@ const authRoutes = require("./routes/auth");
 const messageRoutes = require("./routes/messages");
 const cloudRoutes = require("./routes/cloudinary");
 const socket = require("socket.io");
-    
+const https = require("https");
+const fs = require("fs");
 const app = express();
+
 require("dotenv").config();
 
 app.use(cors());
@@ -27,10 +29,18 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/cloud", cloudRoutes);
 
-const PORT = process.env.PORT || 5000
-const server = app.listen(PORT,()=>{
-    console.log(`Server running on Port ${PORT}`);
-})
+const PORT = process.env.PORT || 2525
+
+const options = {
+  key: fs.readFileSync("/etc/letsencrypt/live/ebitsvisionai.in/fullchain.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/ebitsvisionai.in/privkey.pem")
+};
+
+const server = https.createServer(options, app);
+
+server.listen(PORT, () => {
+  console.log(`Server running on Port ${PORT}`);
+});
 
 const io = socket(server,{
   cors :{
